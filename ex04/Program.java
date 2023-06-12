@@ -6,43 +6,63 @@ public class Program {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        short charCount[] = getCharCount(input);
-        short TopTen[] = getTopTen(charCount);
+        short[] charCount = getCharCount(input);
+        getTopTen(charCount);
 
 
     }
 
-    private static short[] getTopTen(short[] charCount) {
-        short[] TopTenCount = new short[10];
-        char[] TopTenChars = new char[10];
+    private static void getTopTen(short[] charCount) {
+        short[] topTenCount = new short[10];
+        char[] topTenChars = new char[10];
         for (int i = 0; i < MAX_CHARS; i++) {
-            if (charCount[i] > TopTenCount[9]) {
-                TopTenCount[9] = charCount[i];
-                TopTenChars[9] = (char) i;
+            if (charCount[i] > topTenCount[9]) {
+                topTenCount[9] = charCount[i];
+                topTenChars[9] = (char) i;
                 for (int j = 8; j >= 0; j--) {
-                    if (TopTenCount[j] < TopTenCount[j + 1]) {
-                        short tempCount = TopTenCount[j];
-                        TopTenCount[j] = TopTenCount[j + 1];
-                        TopTenCount[j + 1] = tempCount;
-                        char tempChar = TopTenChars[j];
-                        TopTenChars[j] = TopTenChars[j + 1];
-                        TopTenChars[j + 1] = tempChar;
+                    if (topTenCount[j] < topTenCount[j + 1]) {
+                        short tempCount = topTenCount[j];
+                        topTenCount[j] = topTenCount[j + 1];
+                        topTenCount[j + 1] = tempCount;
+                        char tempChar = topTenChars[j];
+                        topTenChars[j] = topTenChars[j + 1];
+                        topTenChars[j + 1] = tempChar;
                     }
                 }
             }
         }
-        for (int i = 0; i < 10; i++) {
-            System.out.println(TopTenChars[i] + ": " + TopTenCount[i]);
+        printTopTen(topTenChars, topTenCount);
+    }
+
+    private static void printTopTen(char[] topTenChars, short[] topTenCount) {
+        for (int i = 10; i >= 0; i--) {
+            putChart(i, topTenCount);
         }
-        return TopTenCount;
+        for (int j = 0; j < 10; j++) {
+            System.out.printf("%3c ", topTenChars[j]);
+        }
+    }
+
+    private static void putChart(int i, short[] topTenCount) {
+        for (int j = 0; j < 10; j++) {
+            if (topTenCount[j] * 10 / topTenCount[0] == i) {
+                System.out.printf("%3d ", topTenCount[j]);
+            } else if (topTenCount[j] * 10 / topTenCount[0] > i) {
+                System.out.print("  # ");
+            } else {
+                System.out.print("    ");
+            }
+        }
+        System.out.println();
+
     }
 
     private static short[] getCharCount(String input) {
         char[] chars = input.toCharArray();
-        short[] charCount = new short[MAX_CHARS];
+        short[] charsCount = new short[MAX_CHARS];
         for (char c : chars) {
-            charCount[c]++;
+            if (charsCount[c] < 999) charsCount[c]++;
         }
-        return charCount;
+        return charsCount;
     }
 }
