@@ -26,6 +26,11 @@ public class Program {
         int count = 0;
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (!scanner.hasNextInt())  {
+                System.err.println("Illegal Argument");
+                System.exit(1);
+            }
+
             int query = scanner.nextInt();
             if (query == 42) {
                 break;
